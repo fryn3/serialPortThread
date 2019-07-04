@@ -9,7 +9,7 @@ class SerialPortThread : public QSerialPort
 {
     Q_OBJECT
 
-    QEventLoop m_loop;  // for thread run
+//    QEventLoop m_loop;  // for thread run
 public:
     struct Settings {
         QString name;
