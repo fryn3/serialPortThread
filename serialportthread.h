@@ -1,15 +1,11 @@
 #ifndef SERIALPORTTHREAD_H
 #define SERIALPORTTHREAD_H
 
-
-#include <QEventLoop>
 #include <QSerialPort>
 
 class SerialPortThread : public QSerialPort
 {
     Q_OBJECT
-
-//    QEventLoop m_loop;  // for thread run
 public:
     struct Settings {
         QString name;

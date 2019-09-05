@@ -12,7 +12,6 @@ SerialPortThread::SerialPortThread(Settings s, QObject *parent)
         auto msg = readAll();
         emit rxMsg(msg);
     });
-//    connect(this, &SerialPortThread::stoped, [this] () { m_loop.exit(); });
 }
 
 void SerialPortThread::start()
@@ -22,7 +21,6 @@ void SerialPortThread::start()
         return;
     }
     emit started();
-//    m_loop.exec();
 }
 
 void SerialPortThread::stop()
@@ -30,7 +28,6 @@ void SerialPortThread::stop()
     if (isOpen()) {
         close();
     }
-//    m_loop.exit();
     emit stoped(0);
 }
 
