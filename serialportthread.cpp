@@ -25,9 +25,7 @@ void SerialPortThread::start()
 
 void SerialPortThread::stop()
 {
-    if (isOpen()) {
-//        close();
-    }
+    if (isOpen()) { close(); }
     emit stoped(0);
 }
 
