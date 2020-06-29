@@ -1,17 +1,23 @@
 #include "serialportthread.h"
 
 SerialPortThread::SerialPortThread(Settings s, QObject *parent)
-    : QSerialPort(s.name, parent)
+    : QSerialPort(parent)
 {
+    setSettings(s);
+    connect(this, &QSerialPort::readyRead, [this] {
+        auto msg = readAll();
+        emit rxMsg(msg);
+    });
+}
+
+void SerialPortThread::setSettings(SerialPortThread::Settings s)
+{
+    setPortName(s.name);
     setBaudRate(s.baudRate);
     setDataBits(s.dataBits);
     setParity(s.parity);
     setStopBits(s.stopBits);
     setFlowControl(s.flowControl);
-    connect(this, &QSerialPort::readyRead, [this] {
-        auto msg = readAll();
-        emit rxMsg(msg);
-    });
 }
 
 void SerialPortThread::start()
@@ -25,8 +31,10 @@ void SerialPortThread::start()
 
 void SerialPortThread::stop()
 {
-    if (isOpen()) { close(); }
-    emit stoped(0);
+    if (isOpen()) {
+        close();
+        emit stoped(0);
+    }
 }
 
 void SerialPortThread::txMsg(QByteArray txMsg)
