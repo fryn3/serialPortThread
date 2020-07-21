@@ -22,6 +22,7 @@ public:
     SerialPortThread(Settings s = Settings(), QObject *parent = nullptr);
     void setSettings(Settings s);
 public slots:
+    void changePortName(QString portName);
     void start();
     void stop();
     void txMsg(QByteArray txMsg);

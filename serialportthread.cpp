@@ -20,6 +20,16 @@ void SerialPortThread::setSettings(SerialPortThread::Settings s)
     setFlowControl(s.flowControl);
 }
 
+void SerialPortThread::changePortName(QString portName)
+{
+    bool started = isOpen();
+    stop();
+    setPortName(portName);
+    if (started) {
+        start();
+    }
+}
+
 void SerialPortThread::start()
 {
     if (!open(QIODevice::ReadWrite)) {
