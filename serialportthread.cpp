@@ -12,12 +12,17 @@ SerialPortThread::SerialPortThread(Settings s, QObject *parent)
 
 void SerialPortThread::setSettings(SerialPortThread::Settings s)
 {
+    bool started = isOpen();
+    stop();
     setPortName(s.name);
     setBaudRate(s.baudRate);
     setDataBits(s.dataBits);
     setParity(s.parity);
     setStopBits(s.stopBits);
     setFlowControl(s.flowControl);
+    if (started) {
+        start();
+    }
 }
 
 void SerialPortThread::changePortName(QString portName)

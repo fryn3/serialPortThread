@@ -20,8 +20,8 @@ public:
     };
 
     SerialPortThread(Settings s = Settings(), QObject *parent = nullptr);
-    void setSettings(Settings s);
 public slots:
+    void setSettings(Settings s);
     void changePortName(QString portName);
     void start();
     void stop();
