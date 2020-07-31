@@ -12,10 +12,16 @@ class SerialPortAsync : public QObject
 {
     Q_OBJECT
 public:
-    SerialPortAsync(QObject *parent = nullptr);
+    SerialPortAsync(SerialPortThread::Settings s, QObject *parent = nullptr);
+    SerialPortAsync(QString name,
+                    QSerialPort::BaudRate baudRate = QSerialPort::Baud9600,
+                    QObject *parent = nullptr);
+    SerialPortAsync(QSerialPort::BaudRate baudRate, QObject *parent = nullptr);
+    virtual ~SerialPortAsync();
 public slots:
     void setSettings(SerialPortThread::Settings s);
-    void changePortName(QString portName);
+    void setPortName(QString portName);
+    void setBaudRate(QSerialPort::BaudRate baud);
     void start();
     void stop();
     void txMsg(QByteArray msg);
@@ -37,14 +43,16 @@ private:
     SerialPortAsyncPrivate(SerialPortThread *port, QObject *parent = nullptr);
 signals:
     void sigSetSettings(SerialPortThread::Settings s);
-    void sigChangePortName(QString portName);
+    void sigSetPortName(QString portName);
+    void sigSetBaudRate(QSerialPort::BaudRate baud);
     void sigStart();
     void sigStop();
     void sigTxMsg(QByteArray txMsg);
 
 public slots:
     void setSettings(SerialPortThread::Settings s)  { emit sigSetSettings(s); }
-    void changePortName(QString portName)           { emit sigChangePortName(portName); }
+    void setPortName(QString portName)              { emit sigSetPortName(portName); }
+    void setBaudRate(QSerialPort::BaudRate baud)    { emit sigSetBaudRate(baud); }
     void start()                                    { emit sigStart(); }
     void stop()                                     { emit sigStop(); }
     void txMsg(QByteArray msg)                      { emit sigTxMsg(msg); }

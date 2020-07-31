@@ -20,9 +20,12 @@ public:
     };
 
     SerialPortThread(Settings s = Settings(), QObject *parent = nullptr);
+    SerialPortThread(QString name, QSerialPort::BaudRate baudRate = Baud9600, QObject *parent = nullptr);
+    SerialPortThread(QSerialPort::BaudRate baudRate, QObject *parent = nullptr);
 public slots:
     void setSettings(Settings s);
-    void changePortName(QString portName);
+    void setPortName(QString portName);
+    void setBaudRate(QSerialPort::BaudRate baud);
     void start();
     void stop();
     void txMsg(QByteArray txMsg);

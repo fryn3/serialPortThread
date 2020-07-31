@@ -6,8 +6,10 @@ SerialPortAsyncPrivate::SerialPortAsyncPrivate(
 {
     connect(this, &SerialPortAsyncPrivate::sigSetSettings,
             port,          &SerialPortThread::setSettings);
-    connect(this, &SerialPortAsyncPrivate::sigChangePortName,
-            port,          &SerialPortThread::changePortName);
+    connect(this, &SerialPortAsyncPrivate::sigSetPortName,
+            port,          &SerialPortThread::setPortName);
+    connect(this, &SerialPortAsyncPrivate::sigSetBaudRate,
+            port,          &SerialPortThread::setBaudRate);
     connect(this, &SerialPortAsyncPrivate::sigStart,
             port,          &SerialPortThread::start);
     connect(this, &SerialPortAsyncPrivate::sigStop,
@@ -16,8 +18,8 @@ SerialPortAsyncPrivate::SerialPortAsyncPrivate(
             port,          &SerialPortThread::txMsg);
 }
 
-SerialPortAsync::SerialPortAsync(QObject *parent)
-    : QObject(parent), _port(new SerialPortThread()),
+SerialPortAsync::SerialPortAsync(SerialPortThread::Settings s, QObject *parent)
+    : QObject(parent), _port(new SerialPortThread(s)),
       _portPrivate(new SerialPortAsyncPrivate(_port, this))
 {
     _port->moveToThread(&_thread);
@@ -28,14 +30,33 @@ SerialPortAsync::SerialPortAsync(QObject *parent)
     connect(_port, &SerialPortThread::rxMsg, this, &SerialPortAsync::rxMsg);
 }
 
+SerialPortAsync::SerialPortAsync(QString name, QSerialPort::BaudRate baudRate,
+                                 QObject *parent)
+    : SerialPortAsync(SerialPortThread::Settings(name, baudRate), parent) { }
+
+SerialPortAsync::SerialPortAsync(QSerialPort::BaudRate baudRate,
+                                 QObject *parent)
+    : SerialPortAsync(SerialPortThread::Settings("", baudRate), parent) { }
+
+SerialPortAsync::~SerialPortAsync()
+{
+    _thread.quit();
+    _thread.wait();
+}
+
 void SerialPortAsync::setSettings(SerialPortThread::Settings s)
 {
     _portPrivate->setSettings(s);
 }
 
-void SerialPortAsync::changePortName(QString portName)
+void SerialPortAsync::setPortName(QString portName)
 {
-    _portPrivate->changePortName(portName);
+    _portPrivate->setPortName(portName);
+}
+
+void SerialPortAsync::setBaudRate(QSerialPort::BaudRate baud)
+{
+    _portPrivate->setBaudRate(baud);
 }
 
 void SerialPortAsync::start()

@@ -10,12 +10,21 @@ SerialPortThread::SerialPortThread(Settings s, QObject *parent)
     });
 }
 
+SerialPortThread::SerialPortThread(QString name,
+                                   QSerialPort::BaudRate baudRate,
+                                   QObject *parent)
+    : SerialPortThread(Settings(name, baudRate), parent) { }
+
+SerialPortThread::SerialPortThread(QSerialPort::BaudRate baudRate,
+                                   QObject *parent)
+    : SerialPortThread(Settings("", baudRate), parent) { }
+
 void SerialPortThread::setSettings(SerialPortThread::Settings s)
 {
     bool started = isOpen();
     stop();
-    setPortName(s.name);
-    setBaudRate(s.baudRate);
+    QSerialPort::setPortName(s.name);
+    QSerialPort::setBaudRate(s.baudRate);
     setDataBits(s.dataBits);
     setParity(s.parity);
     setStopBits(s.stopBits);
@@ -25,11 +34,21 @@ void SerialPortThread::setSettings(SerialPortThread::Settings s)
     }
 }
 
-void SerialPortThread::changePortName(QString portName)
+void SerialPortThread::setPortName(QString portName)
 {
     bool started = isOpen();
     stop();
-    setPortName(portName);
+    QSerialPort::setPortName(portName);
+    if (started) {
+        start();
+    }
+}
+
+void SerialPortThread::setBaudRate(QSerialPort::BaudRate baud)
+{
+    bool started = isOpen();
+    stop();
+    QSerialPort::setBaudRate(baud);
     if (started) {
         start();
     }
