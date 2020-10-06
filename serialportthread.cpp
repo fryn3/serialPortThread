@@ -44,7 +44,7 @@ void SerialPortThread::setPortName(QString portName)
     }
 }
 
-void SerialPortThread::setBaudRate(QSerialPort::BaudRate baud)
+void SerialPortThread::setBaudRate(int baud)
 {
     bool started = isOpen();
     stop();

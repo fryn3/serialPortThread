@@ -54,7 +54,7 @@ void SerialPortAsync::setPortName(QString portName)
     _portPrivate->setPortName(portName);
 }
 
-void SerialPortAsync::setBaudRate(QSerialPort::BaudRate baud)
+void SerialPortAsync::setBaudRate(int baud)
 {
     _portPrivate->setBaudRate(baud);
 }
