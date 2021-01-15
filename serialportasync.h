@@ -12,6 +12,7 @@ class SerialPortAsync : public QObject
 {
     Q_OBJECT
 public:
+    SerialPortAsync(QObject *parent = nullptr);
     SerialPortAsync(SerialPortThread::Settings s, QObject *parent = nullptr);
     SerialPortAsync(QString name,
                     QSerialPort::BaudRate baudRate = QSerialPort::Baud9600,
@@ -22,7 +23,15 @@ public slots:
     void setSettings(SerialPortThread::Settings s);
     void setPortName(QString portName);
     void setBaudRate(int baud);
+
+    /*!
+     * \brief Открывает порт
+     */
     void start();
+
+    /*!
+     * \brief Закрывает порт
+     */
     void stop();
     void txMsg(QByteArray msg);
 signals:

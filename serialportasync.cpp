@@ -30,6 +30,9 @@ SerialPortAsync::SerialPortAsync(SerialPortThread::Settings s, QObject *parent)
     connect(_port, &SerialPortThread::rxMsg, this, &SerialPortAsync::rxMsg);
 }
 
+SerialPortAsync::SerialPortAsync(QObject *parent)
+    : SerialPortAsync(SerialPortThread::Settings(), parent) { }
+
 SerialPortAsync::SerialPortAsync(QString name, QSerialPort::BaudRate baudRate,
                                  QObject *parent)
     : SerialPortAsync(SerialPortThread::Settings(name, baudRate), parent) { }
