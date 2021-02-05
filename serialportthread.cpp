@@ -1,8 +1,7 @@
 #include "serialportthread.h"
 
 SerialPortThread::SerialPortThread(Settings s, QObject *parent)
-    : QSerialPort(parent)
-{
+    : QSerialPort(parent) {
     setSettings(s);
     connect(this, &QSerialPort::readyRead, [this] {
         auto msg = readAll();
@@ -19,8 +18,7 @@ SerialPortThread::SerialPortThread(QSerialPort::BaudRate baudRate,
                                    QObject *parent)
     : SerialPortThread(Settings("", baudRate), parent) { }
 
-void SerialPortThread::setSettings(SerialPortThread::Settings s)
-{
+void SerialPortThread::setSettings(SerialPortThread::Settings s) {
     bool started = isOpen();
     stop();
     QSerialPort::setPortName(s.name);
@@ -34,8 +32,7 @@ void SerialPortThread::setSettings(SerialPortThread::Settings s)
     }
 }
 
-void SerialPortThread::setPortName(QString portName)
-{
+void SerialPortThread::setPortName(QString portName) {
     bool started = isOpen();
     stop();
     QSerialPort::setPortName(portName);
@@ -44,8 +41,7 @@ void SerialPortThread::setPortName(QString portName)
     }
 }
 
-void SerialPortThread::setBaudRate(int baud)
-{
+void SerialPortThread::setBaudRate(int baud) {
     bool started = isOpen();
     stop();
     QSerialPort::setBaudRate(baud);
@@ -54,8 +50,16 @@ void SerialPortThread::setBaudRate(int baud)
     }
 }
 
-void SerialPortThread::start()
-{
+void SerialPortThread::setParity(int value) {
+    bool started = isOpen();
+    stop();
+    QSerialPort::setParity(Parity(value));
+    if (started) {
+        start();
+    }
+}
+
+void SerialPortThread::start() {
     if (!open(QIODevice::ReadWrite)) {
         emit stoped(1); // error
         return;
@@ -63,15 +67,13 @@ void SerialPortThread::start()
     emit started();
 }
 
-void SerialPortThread::stop()
-{
+void SerialPortThread::stop() {
     if (isOpen()) {
         close();
         emit stoped(0);
     }
 }
 
-void SerialPortThread::txMsg(QByteArray txMsg)
-{
+void SerialPortThread::txMsg(QByteArray txMsg) {
     write(txMsg);
 }

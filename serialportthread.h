@@ -26,6 +26,7 @@ public slots:
     void setSettings(Settings s);
     void setPortName(QString portName);
     void setBaudRate(int baudRate);
+    void setParity(int value);
     void start();
     void stop();
     void txMsg(QByteArray txMsg);

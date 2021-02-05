@@ -23,7 +23,7 @@ public slots:
     void setSettings(SerialPortThread::Settings s);
     void setPortName(QString portName);
     void setBaudRate(int baud);
-
+    void setParity(int value);
     /*!
      * \brief Открывает порт
      */
@@ -54,6 +54,7 @@ signals:
     void sigSetSettings(SerialPortThread::Settings s);
     void sigSetPortName(QString portName);
     void sigSetBaudRate(int baud);
+    void sigSetParity(int value);
     void sigStart();
     void sigStop();
     void sigTxMsg(QByteArray txMsg);
@@ -62,6 +63,7 @@ public slots:
     void setSettings(SerialPortThread::Settings s)  { emit sigSetSettings(s); }
     void setPortName(QString portName)              { emit sigSetPortName(portName); }
     void setBaudRate(int baud)                      { emit sigSetBaudRate(baud); }
+    void setParity(int value)                       { emit sigSetParity(value); }
     void start()                                    { emit sigStart(); }
     void stop()                                     { emit sigStop(); }
     void txMsg(QByteArray msg)                      { emit sigTxMsg(msg); }
