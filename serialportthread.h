@@ -6,6 +6,7 @@
 class SerialPortThread : public QSerialPort
 {
     Q_OBJECT
+    static const bool _REG_TYPE;
 public:
     struct Settings {
         QString name;

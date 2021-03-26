@@ -1,5 +1,12 @@
 #include "serialportthread.h"
 
+static bool regTypes() {
+    qRegisterMetaType<SerialPortThread::Settings>("SerialPortThread::Settings");
+    return true;
+}
+
+const bool SerialPortThread::_REG_TYPE = regTypes();
+
 SerialPortThread::SerialPortThread(Settings s, QObject *parent)
     : QSerialPort(parent) {
     setSettings(s);
